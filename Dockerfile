@@ -1,7 +1,11 @@
-FROM tomcat:9.0
+FROM node:alpine
 
-ADD sample.war /usr/local/tomcat/webapps/
+WORKDIR /usr/src/app/
 
-EXPOSE 8000
+COPY ./package.json ./
 
-CMD ["catalina.sh","run"]
+RUN npm install
+
+COPY ./ ./
+
+CMD ["npm","start"]

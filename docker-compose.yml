@@ -1,0 +1,9 @@
+version: '3'
+services:
+    database:
+        image: 'redis'
+    app:
+        build: .
+        ports:
+            - 4001:8089
+    

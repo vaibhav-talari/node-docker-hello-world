@@ -1,10 +1,23 @@
-var express = require('express');
-var app = express();
+const express = require('express');
+const redis = require('redis');
 
-app.get('/',function(req,res){
-res.send('Hello World');
+const app = express();
+const client = redis.createClient({
+    host: 'database',
+    port: 6379
 });
 
-app.listen(3000,function (){
-console.log('Hello World App listening on Port 3000');
+
+client.set('visits', 0);
+
+app.get('/', (req, res) => {
+    client.get('visits', (err, visits) => {
+        res.send('Number of visits is: ' + visits + 1)
+        client.set('visits', parseInt(visits) + 1)
+    })
+});
+
+//specifying the listening port
+app.listen(8089, ()=>{
+    console.log('Listening on port 8081')
 });
